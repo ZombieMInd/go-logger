@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/ZombieMInd/go-logger/internal/logger/server"
+	"github.com/ZombieMInd/go-logger/internal/server"
 	"github.com/joho/godotenv"
 )
 
@@ -18,6 +18,6 @@ func main() {
 
 	server.InitConfig(conf)
 
-	fmt.Printf("Starting %s", conf.Name)
+	fmt.Printf("Starting %s on %s \n", conf.Name, conf.BindAddr)
 	server.Start(conf)
 }

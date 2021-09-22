@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/ZombieMInd/go-logger/internal/logger"
+	"github.com/ZombieMInd/go-logger/internal/store"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
@@ -22,20 +24,22 @@ type server struct {
 	router   *mux.Router
 	logger   *logrus.Logger
 	services Services
+	store    store.Store
 }
 
 type LogService interface {
-	Save()
+	Save(*logger.LogRequest) error
 }
 
 type Services struct {
 	Log LogService
 }
 
-func NewServer() *server {
+func NewServer(store store.Store) *server {
 	return &server{
 		router: mux.NewRouter(),
 		logger: logrus.New(),
+		store:  store,
 	}
 }
 
@@ -101,6 +105,7 @@ func (s *server) configLogger(conf *Config) {
 }
 
 func (s *server) InitServices(config *Config) error {
-
+	repository := s.store.Log()
+	s.services.Log = logger.NewService(repository)
 	return nil
 }
