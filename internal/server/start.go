@@ -59,7 +59,7 @@ func newDB(dbURL string) (*sql.DB, error) {
 }
 
 func initStore(conf *Config) (store.Store, error) {
-	if conf.StoreMode == "psql" {
+	if conf.StoreMode == "postgres" {
 		db, err := newDB(conf.DBURL)
 		if err != nil {
 			return nil, err
