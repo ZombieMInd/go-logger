@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/http/pprof"
 
 	"github.com/ZombieMInd/go-logger/internal/store"
 	"github.com/ZombieMInd/go-logger/internal/store/redisstore"
@@ -43,6 +44,11 @@ func initRouter(s *server) {
 	s.router.Use(s.logRequest)
 	s.router.Use(handlers.CORS(handlers.AllowedOrigins([]string{"*"})))
 	s.router.HandleFunc("/log", s.handleLog()).Methods("POST")
+	s.router.HandleFunc("/debug/pprof/", pprof.Index)
+	s.router.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
+	s.router.HandleFunc("/debug/pprof/profile", pprof.Profile)
+	s.router.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
+	s.router.HandleFunc("/debug/pprof/trace", pprof.Trace)
 }
 
 func newDB(dbURL string) (*sql.DB, error) {
