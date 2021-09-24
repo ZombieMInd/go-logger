@@ -13,6 +13,10 @@ func (t *TestLogRepository) Save(l *LogRequest) error {
 	return nil
 }
 
+func (t *TestLogRepository) SaveRaw(uuid uuid.UUID, ip string, body []byte) error {
+	return nil
+}
+
 func TestLogRequest(t *testing.T) *LogRequest {
 	t.Helper()
 

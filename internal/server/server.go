@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 	"time"
 
@@ -29,6 +30,7 @@ type server struct {
 
 type LogService interface {
 	Save(*logger.LogRequest) error
+	SaveRaw([]byte, string) error
 }
 
 type Services struct {
@@ -102,6 +104,11 @@ func (s *server) configLogger(conf *Config) {
 		FullTimestamp: true,
 	}
 	s.logger.SetFormatter(formatter)
+	level, err := logrus.ParseLevel(conf.LogLevel)
+	if err != nil {
+		log.Fatalf("error while parsing log level: %s", err)
+	}
+	s.logger.Level = level
 }
 
 func (s *server) InitServices(config *Config) error {

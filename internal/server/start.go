@@ -44,6 +44,8 @@ func initRouter(s *server) {
 	s.router.Use(s.logRequest)
 	s.router.Use(handlers.CORS(handlers.AllowedOrigins([]string{"*"})))
 	s.router.HandleFunc("/log", s.handleLog()).Methods("POST")
+	s.router.HandleFunc("/log/raw", s.handleLogRaw()).Methods("POST")
+
 	s.router.HandleFunc("/debug/pprof/", pprof.Index)
 	s.router.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
 	s.router.HandleFunc("/debug/pprof/profile", pprof.Profile)

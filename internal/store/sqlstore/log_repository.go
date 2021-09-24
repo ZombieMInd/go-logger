@@ -50,3 +50,29 @@ func (r *LogRepository) Save(l *logger.LogRequest) error {
 
 	return nil
 }
+
+func (r *LogRepository) SaveRaw(uuid uuid.UUID, ip string, body []byte) error {
+	ctx := context.Background()
+
+	tx, err := r.store.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	_, err = tx.ExecContext(ctx, InserRawLog,
+		uuid,
+		ip,
+		body,
+	)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	if err = tx.Commit(); err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -19,5 +19,5 @@ class LoggerUser(HttpUser):
 
     @task
     def messagesJSON(self):
-        self.client.post("/log", json=self.message)
+        self.client.post("/log/raw", json=self.message)
 

@@ -14,3 +14,7 @@ func (r *LogRepository) Save(l *logger.LogRequest) error {
 	r.logs[l.UUID] = l
 	return nil
 }
+
+func (r *LogRepository) SaveRaw(uuid uuid.UUID, ip string, body []byte) error {
+	return nil
+}
